@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import GoogleMapView from '@/components/GoogleMapView';
+import Header from '@/components/Header';
+import { StyleSheet, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>hello</Text>
+      <Header />
+      <GoogleMapView />
     </View>
   );
 }
@@ -11,12 +14,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    color: 'black',
-    backgroundColor: 'purple',
-    padding: 10,
+    backgroundColor: '#fff',
+    paddingTop: 50,
+    padding: 20,
   },
 });
