@@ -1,39 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 
-import * as Location from 'expo-location';
 import MapView, { Marker, UrlTile } from 'react-native-maps';
+import { PlaceT } from './PalaceList';
 
-const GoogleMapView = () => {
-  const [mapRegion, setMapRegion] = useState<any>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+type Props = {
+  places?: PlaceT[];
+  mapRegion: any;
+  errorMsg?: string | null;
+};
 
-  useEffect(() => {
-    const getCurrentLocation = async () => {
-      // ✅ Request permission
-      const { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      // ✅ Get user location
-      const location = await Location.getCurrentPositionAsync({});
-
-      // ✅ Set map region
-      setMapRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      });
-    };
-
-    getCurrentLocation();
-  }, []);
-
-  // თუ არ ჩატვირთულა ლოკაცია
+const GoogleMapView = ({ places, mapRegion, errorMsg }: Props) => {
   if (!mapRegion) {
     return (
       <View style={styles.loadingContainer}>
@@ -46,14 +23,19 @@ const GoogleMapView = () => {
     <View style={styles.container}>
       <Text style={styles.text}>Top Near by Places</Text>
 
-      <MapView style={styles.map} region={mapRegion} showsUserLocation={true}>
-        {/* ✅ უფასო OpenStreetMap Tiles */}
+      <MapView
+        style={styles.map}
+        initialRegion={mapRegion}
+        showsUserLocation={true}
+        onRegionChangeComplete={(region) => {
+          console.log('region', region);
+        }}
+      >
         <UrlTile
           urlTemplate='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
           maximumZ={19}
         />
 
-        {/* ✅ Marker */}
         <Marker
           title='You are here'
           coordinate={{
@@ -61,9 +43,18 @@ const GoogleMapView = () => {
             longitude: mapRegion.longitude,
           }}
         />
+
+        {places?.map((place) => (
+          <Marker
+            key={place.id}
+            title={place.tags['name:ka'] || place.tags.name || 'Unknown Place'}
+            description={place.tags.amenity || ''}
+            coordinate={{ latitude: place.lat, longitude: place.lon }}
+            pinColor='blue'
+          />
+        ))}
       </MapView>
 
-      {/* Error */}
       {errorMsg && <Text style={styles.error}>{errorMsg}</Text>}
     </View>
   );

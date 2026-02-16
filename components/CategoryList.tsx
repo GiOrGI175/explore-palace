@@ -19,24 +19,41 @@ const categorylist: categorylistT[] = [
   {
     id: 1,
     name: 'Gas Station',
-    value: 'gas_station',
+    value: 'amenity=fuel',
     icon: require('./../assets/img/gas.png'),
   },
   {
     id: 2,
     name: 'Restaurants',
-    value: 'restaurant',
+    value: 'amenity=restaurant',
     icon: require('./../assets/img/food.png'),
   },
   {
     id: 3,
     name: 'Cafe',
-    value: 'cafe',
+    value: 'amenity=cafe',
     icon: require('./../assets/img/cafe.png'),
+  },
+  {
+    id: 4,
+    name: 'Hotel',
+    value: 'tourism=hotel',
+    icon: require('./../assets/img/hotel.png'),
+  },
+  {
+    id: 5,
+    name: 'Shop',
+    value: 'shop=supermarket',
+    icon: require('./../assets/img/shop.png'),
   },
 ];
 
-const CategoryList = () => {
+type Props = {
+  onCategoryPress: (value: string) => void;
+  selectedCategory?: string;
+};
+
+const CategoryList = ({ onCategoryPress, selectedCategory }: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Top Category</Text>
@@ -46,8 +63,11 @@ const CategoryList = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => console.log(item.name)}>
-            <CategoryItem category={item} />
+          <TouchableOpacity onPress={() => onCategoryPress(item.value)}>
+            <CategoryItem
+              category={item}
+              isSelected={selectedCategory === item.value}
+            />
           </TouchableOpacity>
         )}
       />
@@ -63,6 +83,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    marginBottom: 10,
     fontFamily: 'Raleway-Regular',
   },
 });
