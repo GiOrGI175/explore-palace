@@ -27,7 +27,9 @@ const PalaceItem = ({ palce }: Props) => {
   return (
     <View style={styles.card}>
       <Image
-        source={require('./../assets/img/placeholder.jpg')}
+        source={{
+          uri: `https://picsum.photos/400/400?random=${palce.id}`,
+        }}
         style={styles.img}
       />
 

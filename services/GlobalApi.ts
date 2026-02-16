@@ -34,7 +34,7 @@ const nearByPlace = async (
       headers: {
         'Content-Type': 'text/plain',
       },
-      timeout: 15000, // 15 წამი timeout
+      timeout: 15000,
     });
 
     return response;

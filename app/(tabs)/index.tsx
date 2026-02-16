@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import CategoryList from '@/components/CategoryList';
 import GoogleMapView from '@/components/GoogleMapView';
@@ -87,7 +93,7 @@ export default function HomeScreen() {
   }, [mapRegion]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Header />
       <GoogleMapView
         places={placeList}
@@ -117,7 +123,7 @@ export default function HomeScreen() {
           </View>
         )
       )}
-    </View>
+    </ScrollView>
   );
 }
 
