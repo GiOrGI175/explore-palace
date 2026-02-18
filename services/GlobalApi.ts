@@ -37,6 +37,7 @@ const nearByPlace = async (
       timeout: 15000,
     });
 
+    console.log(response);
     return response;
   } catch (error: any) {
     console.error(
@@ -61,6 +62,24 @@ const nearByPlace = async (
   }
 };
 
+const getPlaceById = async (id: number) => {
+  const query = `
+    [out:json][timeout:15];
+    node(${id});
+    out body;
+  `;
+
+  const endpoint = OVERPASS_ENDPOINTS[currentEndpointIndex];
+
+  const response = await axios.post(endpoint, query, {
+    headers: { 'Content-Type': 'text/plain' },
+    timeout: 15000,
+  });
+
+  return response.data.elements[0];
+};
+
 export default {
   nearByPlace,
+  getPlaceById,
 };
